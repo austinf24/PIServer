@@ -31,7 +31,7 @@ public class Participant {
 
     private long id;
 
-    public enum CBM_CONDITION {FIFTY_FIFTY, POSITIVE, NEUTRAL}
+    public enum CBM_CONDITION {FIFTY_FIFTY, POSITIVE, NEUTRAL, POST}
     public enum PRIME {NEUTRAL, ANXIETY}
     private static final Random RANDOM = new Random();  // For generating random CBM and Prime values.
     private static final Logger LOG = LoggerFactory.getLogger(Participant.class);
@@ -106,12 +106,21 @@ public class Participant {
      * @param lastSession
      * @param taskLogs
      */
-    public void setStudy(CBM_CONDITION condition, String session, int taskIndex, Date lastSession, List<TaskLog> taskLogs) {
+    private void setStudy(CBM_CONDITION condition, String session, int taskIndex, Date lastSession, List<TaskLog> taskLogs) {
         if(condition == CBM_CONDITION.NEUTRAL) {
             this.study = new CBMNeutralStudy(session, taskIndex, lastSession, taskLogs);
         } else {
             this.study = new CBMStudy(session, taskIndex, lastSession, taskLogs);
         }
+    }
+
+    /**
+     * Changes the CBM_Condition to a post study condition, reseting the user back to the first Session.
+     * at this point they can re-take the study.
+     */
+    public void enterPostStudy() {
+        this.cbmCondition = CBM_CONDITION.POST;
+        this.study = new CBMPostStudy(CBMStudy.NAME.SESSION1.toString(), 0, null, new ArrayList<TaskLog>())
     }
 
     /**

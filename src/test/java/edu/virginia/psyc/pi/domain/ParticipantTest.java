@@ -168,5 +168,13 @@ public class ParticipantTest {
         assertTrue("after 100 iterations, Neutral should have occurred at least once", isNeutral);
     }
 
+    @Test
+    public void testPostStudy() {
+
+        Participant p;
+        p = new Participant(1, "Dan Funk", "daniel.h.funk@gmail.com", false);
+        p.enterPostStudy();
+        assertTrue(p.getStudy() instanceof CBMNeutralStudy);
+    }
 
 }
